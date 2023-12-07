@@ -4,10 +4,22 @@ import mongoose from "mongoose";
 import dotenv from 'dotenv'
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
+import cors from 'cors';
 dotenv.config();
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods:"GET,POST,PUT,DELETE",
+  credentials:true,
+}
+app.use(cors(corsOptions));
 const port = 3000;
 app.use(express.json());
+//  app.use(cors({
+//  origin: true, 
+// credentials: true
+// })) ;
+
 const url = process.env.MONGOID;
 mongoose
   .connect(url)
