@@ -1,12 +1,19 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { signInStart,signInSuccess,signInFailure } from "../app/features/user/userSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  const {loading,error} = useSelector((state)=>{ 
+    return state.user 
+  }
+  );
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -18,6 +25,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      //  setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('http://localhost:3000/api/auth/login',{
         method:'POST',
         headers:{
@@ -37,17 +46,20 @@ const Login = () => {
       console.log(data);
 
       if (data.success === false) {
-        setLoading(false);
-        setError(data.message);
+        // setLoading(false);
+        // setError(data.message);
+        dispatch(signInFailure(data.message));
         return;
       }
-      setLoading(false);
-      setError(null);
+      // setLoading(false);
+      // setError(null);
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      // setLoading(false);
+      // setError(error.message);
       // console.log("Enter correct details");
+      dispatch(signInFailure(error.message));
     }
   };
  
@@ -111,12 +123,13 @@ const Login = () => {
                   </div> */}
                 <button
                   type="submit"
-                  // disabled={loading} Need to work on that
+                  disabled={loading}
+                  //  Need to work on that
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   {/* Create an account */}
-                  {/* {loading ? 'Loading...' : 'Sign Up'} */}
-                  Login 
+                  {loading ? 'Loading...' : 'Login'}
+                  {/* Login  */}
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Do not have an account?{" "}
@@ -128,6 +141,7 @@ const Login = () => {
                   </Link>
                 </p>
               </form>
+              {error && <p className='text-red-500 mt-5'>{error}</p>}
             </div>
           </div>
         </div>
