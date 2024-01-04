@@ -1,6 +1,7 @@
 // import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
@@ -18,6 +19,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await fetch('http://localhost:3000/api/auth/signup',{
         method:'POST',
         headers:{
@@ -137,6 +139,7 @@ const Signup = () => {
                   {loading ? 'Loading...' : 'Sign Up'} 
                   {/* Sign Up */}
                 </button>
+                <OAuth/>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}
                   <Link

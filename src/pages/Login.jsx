@@ -1,13 +1,13 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import { signInStart,signInSuccess,signInFailure } from "../app/features/user/userSlice";
+import OAuth from "../components/OAuth";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
   // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false);
+  // const [loadingg, setLoading] = useState(false);
   const {loading,error} = useSelector((state)=>{ 
     return state.user 
   }
@@ -131,6 +131,7 @@ const Login = () => {
                   {loading ? 'Loading...' : 'Login'}
                   {/* Login  */}
                 </button>
+                <OAuth/>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Do not have an account?{" "}
                   <Link
