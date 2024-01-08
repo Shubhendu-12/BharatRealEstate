@@ -72,7 +72,7 @@ const Signup = () => {
                     Your User Name
                   </label>
                   <input
-                    type="name"
+                    type="text"
                     name="username"
                     id="username"
                     onChange={handleChange}
