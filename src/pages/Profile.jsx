@@ -4,19 +4,19 @@ import { useRef,useState,useEffect } from 'react';
 import {getDownloadURL, getStorage,ref,uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { updateUserStart,updateUserSuccess,updateUserFailure } from '../app/features/user/userSlice';
+import { updateUserStart,updateUserSuccess,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess } from '../app/features/user/userSlice';
 
 const Profile = () => {
    
     const fileRef = useRef(null);
     const {currentUser,loading,error} = useSelector((state)=> {
         return state.user
-    })
+    });
     const [file, setFile] = useState(undefined);
     const [filePercentage, setFilePercentage] = useState(0);
     const [fileUploadError, setFileUploadError] = useState(false);
     const [formData, setFormData] = useState({});
-    const [updateSuccess, setUpdateSuccess] = useState();
+    const [updateSuccess, setUpdateSuccess] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -68,18 +68,19 @@ const Profile = () => {
         try {
          dispatch(updateUserStart());
          const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`,{
-            method:'PUT',
+            method:'POST',
             headers:{
               'Content-Type':'application/json',
-              'Authorization':`Bearer ${currentUser._id}`,
+              // 'Authorization':`Bearer ${currentUser._id}`,
             },
             body: JSON.stringify(formData),
           });
           
           const data = await res.json();
+          console.log(currentUser._id);
           console.log(data);
 
-          if (data.success===false) {
+          if (data.success === false) {
             dispatch(updateUserFailure(data.message));
             return;
           } 
@@ -91,6 +92,26 @@ const Profile = () => {
         dispatch(updateUserFailure(error.message));
      }
     };
+
+    const handleDelete = async ()=>{
+       
+      try {
+        dispatch(deleteUserStart());
+        const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
+          method : 'DELETE',
+        });
+
+        const data = await res.json();
+        console.log(data);
+        if (data.success === false) {
+          deleteUserFailure(data.message);
+          return;
+        }
+        deleteUserSuccess(data);
+      } catch (error) {
+        deleteUserFailure(error.message);
+      }
+    }
 
   return (
     <>
@@ -116,7 +137,7 @@ const Profile = () => {
         //     }}
         // onClick={handleClick}
         onClick={()=> fileRef.current.click()}
-          src={formData.avatar||currentUser.avatar} 
+          src={formData.avatar || currentUser.avatar} 
         // src={setFile.avatar}
           alt="Profile Photo" />
           <p>{fileUploadError?(
@@ -190,7 +211,7 @@ const Profile = () => {
                    {/* Update */}
                 </button>
                <div className='flex justify-between mt-2'>
-                <span className='text-red-600 cursor-pointer'>Delete Account </span>
+                <span className='text-red-600 cursor-pointer'onClick={handleDelete}>Delete Account </span>
                 <span className='text-red-600 cursor-pointer'>Sign Out</span>
                </div>
                 
