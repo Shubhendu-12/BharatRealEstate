@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Sign Up: User token generate
 export const signup = async(req,res,next) =>{
 const {username,email,password} = req.body;
 const hashedPassword = bcryptjs.hashSync(password,10);
@@ -18,6 +19,7 @@ res.status(201).json('User created sucessfully');
 }
 };
 
+// Login:  Authenticate user & get token 
 export const login = async(req,res,next)=>{
     const {email,password}= req.body;
     try {
@@ -38,6 +40,7 @@ export const login = async(req,res,next)=>{
     }
 };
 
+// Google: Authenticate and Login
 export const google = async (req,res,next)=>{
  try {
     const user = await User.findOne({email:req.body.email})
@@ -61,4 +64,14 @@ export const google = async (req,res,next)=>{
  } catch (error) {
    next(error) 
  }
-}
+};
+
+// Sign Out Route
+export const signOut = async (req, res, next) => {
+    try {
+      res.clearCookie('access_token');
+      res.status(200).json('User has been logged out!');
+    } catch (error) {
+      next(error);
+    }
+  };
