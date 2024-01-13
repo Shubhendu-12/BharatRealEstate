@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
-import { signInStart,signInSuccess,signInFailure } from "../app/features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../app/features/user/userSlice";
 import OAuth from "../components/OAuth";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
   // const [error, setError] = useState(null);
   // const [loadingg, setLoading] = useState(false);
-  const {loading,error} = useSelector((state)=>{ 
-    return state.user 
-  }
-  );
+  const { loading, error } = useSelector((state) => {
+    return state.user;
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,12 +30,13 @@ const Login = () => {
     try {
       //  setLoading(true);
       dispatch(signInStart());
-      const res = await fetch('http://localhost:3000/api/auth/login',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
+      const res = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: "include"
       });
       // const { username, email, password } = formData;
       // const res = await axios.post("http://localhost:3000/api/auth/signup", {
@@ -43,7 +47,7 @@ const Login = () => {
 
       // console.log("User creation sucessfull");
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.success === false) {
         // setLoading(false);
@@ -62,7 +66,6 @@ const Login = () => {
       dispatch(signInFailure(error.message));
     }
   };
- 
 
   return (
     <>
@@ -71,10 +74,10 @@ const Login = () => {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                 Login to your account
+                Login to your account
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                 <div>
+                <div>
                   <label
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -128,10 +131,10 @@ const Login = () => {
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   {/* Create an account */}
-                  {loading ? 'Loading...' : 'Login'}
+                  {loading ? "Loading..." : "Login"}
                   {/* Login  */}
                 </button>
-                <OAuth/>
+                <OAuth />
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Do not have an account?{" "}
                   <Link
@@ -142,7 +145,7 @@ const Login = () => {
                   </Link>
                 </p>
               </form>
-              {error && <p className='text-red-500 mt-5'>{error}</p>}
+              {error && <p className="text-red-500 mt-5">{error}</p>}
             </div>
           </div>
         </div>

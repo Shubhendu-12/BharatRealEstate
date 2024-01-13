@@ -71,9 +71,9 @@ const Profile = () => {
             method:'POST',
             headers:{
               'Content-Type':'application/json',
-              // 'Authorization':`Bearer ${currentUser._id}`,
             },
             body: JSON.stringify(formData),
+            credentials: "include"
           });
           
           const data = await res.json();
@@ -99,6 +99,7 @@ const Profile = () => {
         dispatch(deleteUserStart());
         const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
           method : 'DELETE',
+          credentials: "include"
         });
 
         const data = await res.json();
@@ -144,7 +145,7 @@ const Profile = () => {
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div className='flex items-center justify-center flex-col pt-3'>
-        <input  onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
+        <input ref={fileRef} onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
           <img className='rounded-full object-cover my-4  cursor-pointer h-20 w-20 bg-gray-50'
         //   onClick={()=>{
         //     if (fileRef.current) {

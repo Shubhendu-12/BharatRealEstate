@@ -10,8 +10,8 @@ const initialState = {
   name:"user",
   initialState,
   reducers :{
-    signInStart: (state) => {
-        state.loading = true;
+    signInStart: (state) => { 
+    state.loading = true;
     },
     signInSuccess: (state, action) => {
         state.currentUser = action.payload;
