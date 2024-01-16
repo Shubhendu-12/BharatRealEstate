@@ -52,6 +52,7 @@ export const google = async (req, res, next) => {
         .status(200)
         .json(rest);
     } else {
+      // For New User Password will be generated
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);

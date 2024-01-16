@@ -2,7 +2,7 @@ import React from 'react'
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
-import { signInSuccess } from '../app/features/user/userSlice';
+import { logInSuccess } from '../app/features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const OAuth = () => {
@@ -28,7 +28,7 @@ const OAuth = () => {
         }),
       });
       const data = await res.json();
-      dispatch(signInSuccess(data));
+      dispatch(logInSuccess(data));
       navigate('/');
     } catch (error) {
       console.log('could not sign in with google', error);

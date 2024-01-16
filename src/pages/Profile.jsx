@@ -5,6 +5,7 @@ import {getDownloadURL, getStorage,ref,uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
 import { updateUserStart,updateUserSuccess,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess,signOutUserStart,signOutUserSuccess,signOutUserFailure } from '../app/features/user/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
    
@@ -18,7 +19,7 @@ const Profile = () => {
     const [formData, setFormData] = useState({});
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const dispatch = useDispatch();
-
+ const navigate = useNavigate();
     useEffect(() => {
         if(file) {
             handleFileUpload(file);
@@ -62,7 +63,7 @@ const Profile = () => {
         [e.target.id]: e.target.value});
     }
     console.log(formData);
-
+  // Update User API ROUTE
     const handleSubmit =async (e) =>{
         e.preventDefault();
         try {
@@ -73,7 +74,7 @@ const Profile = () => {
               'Content-Type':'application/json',
             },
             body: JSON.stringify(formData),
-            credentials: "include"
+            credentials: "include",
           });
           
           const data = await res.json();
@@ -92,14 +93,15 @@ const Profile = () => {
         dispatch(updateUserFailure(error.message));
      }
     };
-
+   
+    // Delete User API ROUTE
     const handleDelete = async ()=>{
        
       try {
         dispatch(deleteUserStart());
         const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
           method : 'DELETE',
-          credentials: "include"
+          credentials: "include",
         });
 
         const data = await res.json();
@@ -109,11 +111,14 @@ const Profile = () => {
           return;
         }
         deleteUserSuccess(data);
+        //  navigate('/login');
+        // Need to work in this issue where a user is not directly redirected to login page after deletion of account
+
       } catch (error) {
         deleteUserFailure(error.message);
       }
     }
-  //  Sign Out Route
+  //  SignOut User API ROUTE
     const handleSignOut = async () => {
 
       try {
@@ -145,7 +150,7 @@ const Profile = () => {
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div className='flex items-center justify-center flex-col pt-3'>
-        <input ref={fileRef} onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
+        <input  ref={fileRef} onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
           <img className='rounded-full object-cover my-4  cursor-pointer h-20 w-20 bg-gray-50'
         //   onClick={()=>{
         //     if (fileRef.current) {

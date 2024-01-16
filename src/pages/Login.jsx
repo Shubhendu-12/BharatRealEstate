@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  signInStart,
-  signInSuccess,
-  signInFailure,
+  logInStart,
+  logInSuccess,
+  logInFailure,
 } from "../app/features/user/userSlice";
 import OAuth from "../components/OAuth";
 
@@ -29,14 +29,14 @@ const Login = () => {
     e.preventDefault();
     try {
       //  setLoading(true);
-      dispatch(signInStart());
+      dispatch(logInStart());
       const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        credentials: "include"
+        credentials: "include",
       });
       // const { username, email, password } = formData;
       // const res = await axios.post("http://localhost:3000/api/auth/signup", {
@@ -52,18 +52,18 @@ const Login = () => {
       if (data.success === false) {
         // setLoading(false);
         // setError(data.message);
-        dispatch(signInFailure(data.message));
+        dispatch(logInFailure(data.message));
         return;
       }
       // setLoading(false);
       // setError(null);
-      dispatch(signInSuccess(data));
+      dispatch(logInSuccess(data));
       navigate("/");
     } catch (error) {
       // setLoading(false);
       // setError(error.message);
       // console.log("Enter correct details");
-      dispatch(signInFailure(error.message));
+      dispatch(logInFailure(error.message));
     }
   };
 
