@@ -5,7 +5,8 @@ import {getDownloadURL, getStorage,ref,uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
 import { updateUserStart,updateUserSuccess,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess,signOutUserStart,signOutUserSuccess,signOutUserFailure } from '../app/features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from 'flowbite-react';
 
 const Profile = () => {
    
@@ -26,12 +27,7 @@ const Profile = () => {
         }
     }, [file]);
 
-    // const handleClick = () => {
-    //     if (fileRef.current) {
-    //       fileRef.current.click();
-    //     }
-    //   };
-    // Need to work on this onClick on Image
+    
 
     const handleFileUpload = (file)=>{
         const storage = getStorage(app);
@@ -152,12 +148,7 @@ const Profile = () => {
               <div className='flex items-center justify-center flex-col pt-3'>
         <input  ref={fileRef} onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
           <img className='rounded-full object-cover my-4  cursor-pointer h-20 w-20 bg-gray-50'
-        //   onClick={()=>{
-        //     if (fileRef.current) {
-        //       return  fileRef.current.click();
-        //     }
-        //     }}
-        // onClick={handleClick}
+        
         onClick={()=> fileRef.current.click()}
           src={formData.avatar || currentUser.avatar} 
         // src={setFile.avatar}
@@ -232,7 +223,13 @@ const Profile = () => {
                   {loading ? 'Loading...' : 'Update'} 
                    {/* Update */}
                 </button>
-               <div className='flex justify-between mt-2'>
+                <Link to={'/create-listing'}>
+                <button
+                  className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-2"
+                > Create Listing 
+                </button>
+                </Link>
+               <div className='flex justify-between mt-3'>
                 <span className='text-red-600 cursor-pointer'onClick={handleDelete}>Delete Account </span>
                 <span onClick={handleSignOut} className='text-red-600 cursor-pointer'>Sign Out</span>
                </div>
