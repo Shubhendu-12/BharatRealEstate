@@ -6,14 +6,34 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CreateListing = () => {
+  const navigate = useNavigate();
+  const {currentUser} = useSelector((state)=>{
+    return state.user
+  });
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
+    name:'',
+    description: '',
+    address:'',
+    type:'rent',
+    bedrooms:'1',
+    bathrooms:'1',
+    regularPrice:'50',
+    discountedPrice:'0',
+    offer:false,
+    parking:false,
+    furnished:false,
+
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   console.log(formData);
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -78,13 +98,116 @@ const CreateListing = () => {
   };
   // In .filter((_,i )), The first parameter is _ or underscore which means to ignore the first parameter.
 
+   const handleChange = (e)=>{
+    if(e.target.id === 'sale' || e.target.id === 'rent'){
+      setFormData({
+        ...formData,
+        type:e.target.id,
+      });
+    }
+
+    if (
+      e.target.id === 'parking'||
+      e.target.id === 'furnished'||
+      e.target.id === 'offer'
+    ) {
+      setFormData({
+        ...formData,
+        [e.target.id] : e.target.checked,
+      });
+    }
+
+    if (
+      e.target.type === 'number' ||
+      e.target.type === 'text' ||
+      e.target.type === 'textarea'
+    ) {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      });
+    }
+   };
+
+   const handleIncrement1 = () => {
+    setFormData({
+      ...formData,
+      bedrooms: Math.min(formData.bedrooms + 1, 10),
+     
+     
+    });
+  };
+
+  const handleDecrement1 = () => {
+    setFormData({
+      ...formData,
+      bedrooms: Math.max(formData.bedrooms - 1, 1),
+      
+    });
+  };
+
+  const handleIncrement2 = () => {
+    setFormData({
+      ...formData,
+      bathrooms:Math.min(formData.bathrooms + 1, 5),
+     
+    });
+  };
+
+  const handleDecrement2 = () => {
+    setFormData({
+      ...formData,
+     bathrooms:Math.max(formData.bathrooms - 1, 1),
+    });
+  };
+
+  // Create listing API Route
+
+   const handleSubmit = async (e) =>{
+   e.preventDefault();
+   try {
+    if(formData.imageUrls.length < 1) {
+    return setError('You must upload atlest 1 image');
+    }
+  if (+formData.regularPrice < +formData.discountedPrice) {
+    return setError('Discounted price must be lower than regular price');
+  }
+  setLoading(true);
+  setError(false);
+  // API call starts from here 
+
+  const res = await fetch('http://localhost:3000/api/listing/create',{
+    method: 'POST',
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...formData,
+      userRef: currentUser._id,
+    }),
+  });
+  const data =await res.json();
+  console.log(data)
+  setLoading(false);
+  if (data.success === false) {
+    setError(data.message);
+  }
+  navigate(`/listing/${data._id}`)
+
+   } catch (error) {
+    setError(error.message);
+    setLoading(false);
+   }
+   };
+
   return (
     <>
       <main className="mx-auto max-w-5xl p-2">
         <h1 className="font-bold text-3xl text-center my-7">
           Create a new listing!
         </h1>
-        <form className="flex flex-col sm:flex-row">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row">
           <div className="flex flex-col gap-2 flex-1 mx-4">
             <label
               htmlFor="name"
@@ -96,6 +219,8 @@ const CreateListing = () => {
               type="text"
               name="name"
               id="name"
+              onChange={handleChange}
+              value={formData.name}
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Name"
               required
@@ -112,6 +237,8 @@ const CreateListing = () => {
             <textarea
               id="description"
               rows="4"
+              onChange={handleChange}
+              value={formData.description}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Write your description here..."
               required
@@ -127,6 +254,8 @@ const CreateListing = () => {
               type="text"
               name="address"
               id="address"
+              onChange={handleChange}
+              value={formData.address}
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Address"
               required
@@ -139,7 +268,10 @@ const CreateListing = () => {
                     <input
                       id="sale"
                       type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                      onChange={handleChange}
+                      checked={formData.type === 'sale'}
+                      className="w-4 h-4 
+                      text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
                     <label
                       htmlFor="sale"
@@ -154,6 +286,8 @@ const CreateListing = () => {
                     <input
                       id="rent"
                       type="checkbox"
+                      onChange={handleChange}
+                    checked={formData.type === 'rent'}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
                     <label
@@ -169,6 +303,8 @@ const CreateListing = () => {
                     <input
                       id="parking"
                       type="checkbox"
+                      onChange={handleChange}
+                      checked={formData.parking}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
                     <label
@@ -184,6 +320,8 @@ const CreateListing = () => {
                     <input
                       id="furnished"
                       type="checkbox"
+                      onChange={handleChange}
+                      checked={formData.furnished}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
                     <label
@@ -199,6 +337,8 @@ const CreateListing = () => {
                     <input
                       id="offer"
                       type="checkbox"
+                      onChange={handleChange}
+                      checked={formData.offer}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
                     <label
@@ -223,8 +363,9 @@ const CreateListing = () => {
               <div className="relative flex items-center max-w-[11rem]">
                 <button
                   type="button"
-                  id="decrement-button"
+                  id="bedrooms"
                   data-input-counter-decrement="bedrooms"
+                  onClick={handleDecrement1}
                   className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
                   <svg
@@ -244,15 +385,18 @@ const CreateListing = () => {
                   </svg>
                 </button>
                 <input
-                  type="text"
+                  type="number"
                   id="bedrooms"
+                  onChange={handleChange}
+                  value={formData.bedrooms}
                   data-input-counter
                   data-input-counter-min="1"
                   data-input-counter-max="10"
                   aria-describedby="helper-text-explanation"
                   className="bg-gray-50 border-x-0 border-gray-300 h-11 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder=""
-                  defaultValue="3"
+                  min={1}
+                  max={10}
+                  
                   required
                 />
                 <div className="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
@@ -275,7 +419,8 @@ const CreateListing = () => {
                 </div>
                 <button
                   type="button"
-                  id="increment-button"
+                  id="bedrooms"
+                  onClick={handleIncrement1}
                   data-input-counter-increment="bedrooms"
                   className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
@@ -315,6 +460,7 @@ const CreateListing = () => {
                   type="button"
                   id="decrement-button"
                   data-input-counter-decrement="bathrooms"
+                  onClick={handleDecrement2}
                   className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
                   <svg
@@ -334,15 +480,17 @@ const CreateListing = () => {
                   </svg>
                 </button>
                 <input
-                  type="text"
+                  type="number"
                   id="bathrooms"
+                  onChange={handleChange}
+                  value={formData.bathrooms}
                   data-input-counter
                   data-input-counter-min="1"
                   data-input-counter-max="5"
                   aria-describedby="helper-text-explanation"
                   className="bg-gray-50 border-x-0 border-gray-300 h-11 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder=""
-                  defaultValue="3"
+                  
                   required
                 />
                 <div className="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
@@ -367,6 +515,7 @@ const CreateListing = () => {
                   type="button"
                   id="increment-button"
                   data-input-counter-increment="bathrooms"
+                  onClick={handleIncrement2}
                   className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
                   <svg
@@ -406,12 +555,17 @@ const CreateListing = () => {
                 <input
                   type="number"
                   id="regularPrice"
+                  onChange={handleChange}
+                  value={formData.regularPrice}
+                  min={50}
+                  max={1000000}
                   aria-describedby="helper-text-explanation"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="$/Month"
                   required
                 />
               </div>
+              {formData.offer &&(
               <div className="">
                 {/* Discounted price */}
                 <label
@@ -423,12 +577,17 @@ const CreateListing = () => {
                 <input
                   type="number"
                   id="discountedPrice"
+                  onChange={handleChange}
+                  value={formData.discountedPrice}
+                  min={0}
+                  max={1000000}
                   aria-describedby="helper-text-explanation"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="$/Month"
                   required
                 />
               </div>
+              )}
             </div>
           </div>
           <div className="flex flex-col flex-1 mx-4">
@@ -478,9 +637,13 @@ const CreateListing = () => {
                 </div>
               ))}
 
-            <button className=" ml-2 my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 uppercase">
-              Create Listing
+            <button 
+            disabled={loading || uploading}
+             className=" ml-2 my-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 uppercase">
+              {/* Create Listing */}
+              {loading ? 'Creating' : 'Create Listing'}
             </button>
+            {error && <p className="text-red-600 text-sm"> {error}</p>}
           </div>
         </form>
       </main>
