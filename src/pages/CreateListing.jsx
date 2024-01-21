@@ -128,7 +128,7 @@ const CreateListing = () => {
       });
     }
    };
-
+  // Increase and Decrease number of bedrooms and bathrooms 
    const handleIncrement1 = () => {
     setFormData({
       ...formData,

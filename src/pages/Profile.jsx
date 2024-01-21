@@ -6,7 +6,7 @@ import {getDownloadURL, getStorage,ref,uploadBytesResumable,
 import { app } from '../firebase';
 import { updateUserStart,updateUserSuccess,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess,signOutUserStart,signOutUserSuccess,signOutUserFailure } from '../app/features/user/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from 'flowbite-react';
+
 
 const Profile = () => {
    
@@ -19,6 +19,8 @@ const Profile = () => {
     const [fileUploadError, setFileUploadError] = useState(false);
     const [formData, setFormData] = useState({});
     const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [showListingError, setShowListingError] = useState(false);
+    const [userListings, setUserListings] = useState([]);
     const dispatch = useDispatch();
  const navigate = useNavigate();
     useEffect(() => {
@@ -130,10 +132,32 @@ const Profile = () => {
         dispatch(signOutUserFailure(error.message));
       }
     }
+    // Show User Listings API Route
+
+    const handleShowUserListings = async()=>{
+     try {
+      setShowListingError(false);
+      const res = await fetch(`http://localhost:3000/api/user/listings/${currentUser._id}`,{
+      credentials: "include"});
+     
+      
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingError(true);
+        return;
+      }
+
+      setUserListings(data);
+     } catch (error) {
+      setShowListingError(true);
+     }
+    }
+
 
   return (
     <>
-      <div className='font-semibold text-3xl bg-gray-50 text-center pt-4'>Profile
+    <div className='py-20  bg-gray-50'>
+      <div className='font-semibold text-3xl bg-gray-50 text-center  py-10'>Profile
       
       </div>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -141,7 +165,7 @@ const Profile = () => {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
          
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Update your account
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
@@ -238,10 +262,57 @@ const Profile = () => {
               <p className='text-red-600 text-sm mt-2'>{error?error:" "}</p>
               <p className='text-green-700 text-sm mt-2'>
                 {updateSuccess?'User Updated Successfully' : ' '}</p>
+            <div className='max-w-lg'>
+            <button onClick={handleShowUserListings}
+                  className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-2"
+                > Show Listings 
+                </button>
+                <p className='text-red-700 mt-5'>{showListingError?'Error showing listng': ''}</p>
+
+                {userListings && userListings.length > 0 && 
+                <div className='flex flex-col'>
+                  <h1 className='text-center font-semibold my-3 text-2xl'>Your Listings</h1>
+
+                  {userListings.map((listing)=>(
+                    <div
+                    className='flex items-center justify-between border p-3 rounded-lg my-2'
+                    key={listing._id}
+                    >
+                    <Link to={`/listing/${listing._id}`}> 
+                    <img src={listing.imageUrls[0]}
+                    alt='Listing cover'
+                    className='h-16 w-16 object-contain'
+                    />
+                  
+                  </Link>
+                  <Link to={`/listing/${listing._id}`}>
+                    <p className='hover:underline text-gray-800 font-semibold truncate '>{listing.name}</p>
+                  </Link>
+                  <div className=' flex flex-col'>
+                  <button type='button'
+                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-2 uppercase"
+                > Edit 
+                </button>
+                 <button type='button'
+                  className="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2
+                  uppercase"
+                > Delete
+                </button>
+                  </div>
+                  </div>
+
+                  ))}
+
+                </div> }
+              
             </div>
           </div>
-        </div>
+          
+          </div>
+            </div>
+          
       </section>
+      </div>
     </>
   )
 }
