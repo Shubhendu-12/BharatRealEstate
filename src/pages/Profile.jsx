@@ -290,7 +290,7 @@ const Profile = () => {
                   className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-2"
                 > Show Listings 
                 </button>
-                <p className='text-red-700 mt-5'>{showListingError?'Error showing listng': ''}</p>
+                <p className='text-red-700 mt-5'>{showListingError?'Error showing listing': ''}</p>
 
                 {userListings && userListings.length > 0 && 
                 <div className='flex flex-col'>
@@ -312,10 +312,12 @@ const Profile = () => {
                     <p className='hover:underline text-gray-800 font-semibold truncate '>{listing.name}</p>
                   </Link>
                   <div className=' flex flex-col'>
+                   <Link to={`/update-listing/${listing._id}`}>
                   <button type='button'
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-2 uppercase"
                 > Edit 
                 </button>
+                </Link>
                  <button type='button'
                  onClick={()=>handleListingDelete(listing._id)}
                   className="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mt-2
