@@ -550,7 +550,10 @@ const CreateListing = () => {
                   htmlFor="regularPrice"
                   className="block mb-2 px-2 mx-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Regular Price:
+                  Regular Price 
+                  {formData.type === 'rent' && (
+                    <span className="text-xs"> ($/Month)</span>
+                  )}
                 </label>
                 <input
                   type="number"
@@ -572,7 +575,10 @@ const CreateListing = () => {
                   htmlFor="discountedPrice"
                   className="block mb-2 px-2 mx-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Discounted Price:
+                  Discounted Price
+                  {formData.type === 'rent' && (
+                    <span className="text-xs"> ($/Month)</span>
+                  )}
                 </label>
                 <input
                   type="number"

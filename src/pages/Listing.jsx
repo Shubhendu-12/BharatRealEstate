@@ -4,12 +4,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
+import { FaShare,FaBed,FaBath,FaParking,FaChair } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 const Listing = () => {
   SwiperCore.use([Navigation]);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [copied, setCopied] = useState(false);
   const params = useParams();
 
   useEffect(() => {
@@ -33,6 +36,7 @@ const Listing = () => {
         }
 
         setListing(data);
+        console.log(data);
         setLoading(false);
         setError(false);
       } catch (error) {
@@ -45,9 +49,9 @@ const Listing = () => {
   console.log(loading);
  
   return (
-    <main>
+    <main className="bg-slate-200 ">
       {loading && (
-<div role="status" className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
+<div role="status" className=" mt-2 mx-2 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
     <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
         <svg className="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
@@ -88,8 +92,68 @@ const Listing = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+          <div className=" fixed top-24 right-6 z-20 border rounded-full p-2 cursor-pointer w-12 h-12 flex items-center justify-center bg-slate-300 ">
+            <FaShare
+            className="text-slate-600"
+            onClick={()=>{
+              navigator.clipboard.writeText(window.location.href);
+              setCopied(true);
+              setTimeout(()=>setCopied(false),1500);
+            }}
+            />
+          </div>
+          {copied && (<p className="fixed top-36 right-5 z-20">Link copied</p>)}
         </div>
       )}
+      <div className=" my-8 flex flex-col mx-56 max-sm:mx-2  max-md:mx10 max-lg:mx-20 justify-center ">
+        {listing?.name && <p className=" text-2xl font-semibold my-2">
+         {listing.name} - ${' '}
+          
+          {listing.offer ? listing.discountedPrice.toLocaleString('en-US') : listing.regularPrice.toLocaleString('en-US')}
+          {listing.type === 'rent' && '/month'}
+        </p>}
+        {listing?.address && <p className="mt-2 flex items-center gap-2 text-slate-800 text-sm">
+        <FaLocationDot className="text-green-700"/>
+        {listing.address}
+        </p>}
+        
+        <div className="flex gap-2 mt-3">
+        {listing?.type && <p >
+        <button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">{listing.type === 'rent' ? 'For Rent' : 'For Sale'}</button>
+        </p> }
+        {listing?.offer && <p>
+        {listing.offer === true && (
+          <button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">${+listing.regularPrice - +listing.discountedPrice}  discount</button>
+        
+        )} </p>}
+        </div>
+        <div className="mt-2 max-w-4xlxl my-1">
+          {listing?.description && <p className="text-slate-800"> <span className="text-black font-semibold">Description - </span> {listing.description} </p>}
+        </div>
+        <div className="flex flex-wrap mt-2 text-primary-800 gap-5 ">
+        {listing?.bedrooms && <p className="flex items-center gap-1 ">
+         <FaBed className="text-xl"/> 
+          {listing.bedrooms} <span>Beds</span>
+          </p>}
+
+          {listing?.bathrooms && <p className="flex items-center gap-1 ">
+         <FaBath className="text-xl"/> 
+          {listing.bathrooms} <span>Baths</span>
+          </p>}
+
+          {listing?.parking && <p className="flex items-center gap-1 "> 
+          <FaParking className="text-xl"/>
+          {listing.parking ? 'Parking' : ' No Parking'}
+
+            </p>}
+
+           {listing?.furnished && <p className="flex items-center gap-1 "> 
+          <FaChair  className="text-xl"/>
+          {listing.furnished ? 'Furnished' : ' Not Furnished'}
+
+            </p>} 
+        </div>
+      </div>
     </main>
   );
 };
