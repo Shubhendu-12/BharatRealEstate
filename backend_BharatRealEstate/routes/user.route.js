@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUser, getUserListings, test, updateUser } from "../controllers/user.controller.js";
+import { deleteUser, getUser, getUserListings, test, updateUser } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 
@@ -13,4 +13,6 @@ router.delete('/delete/:id',verifyToken,deleteUser);
 
 router.get('/listings/:id',verifyToken,getUserListings)
 
+router.get('/:id', getUser)
+// Don't use verifyToken here as this will not let the access to username and user email of the owner as the person accessing the listing will be diffrent from the owner.
 export default router;

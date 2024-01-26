@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import { FaShare,FaBed,FaBath,FaParking,FaChair } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import Contact from "../components/Contact";
 
 const Listing = () => {
   SwiperCore.use([Navigation]);
@@ -13,7 +15,11 @@ const Listing = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [contact, setContact] = useState(false);
   const params = useParams();
+  const {currentUser} = useSelector((state)=>{
+    return state.user
+  })
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -47,6 +53,7 @@ const Listing = () => {
     fetchListing();
   }, [params.listingId]);
   console.log(loading);
+ 
  
   return (
     <main className="bg-slate-200 ">
@@ -105,7 +112,7 @@ const Listing = () => {
           {copied && (<p className="fixed top-36 right-5 z-20">Link copied</p>)}
         </div>
       )}
-      <div className=" my-8 flex flex-col mx-56 max-sm:mx-2  max-md:mx10 max-lg:mx-20 justify-center ">
+      <div className=" my-8 flex flex-col mx-auto max-w-4xl max-sm:mx-2  max-md:mx10 max-lg:mx-20 justify-center ">
         {listing?.name && <p className=" text-2xl font-semibold my-2">
          {listing.name} - ${' '}
           
@@ -127,32 +134,39 @@ const Listing = () => {
         
         )} </p>}
         </div>
-        <div className="mt-2 max-w-4xlxl my-1">
+        <div className="mt-2 max-w-3xl my-1">
           {listing?.description && <p className="text-slate-800"> <span className="text-black font-semibold">Description - </span> {listing.description} </p>}
         </div>
-        <div className="flex flex-wrap mt-2 text-primary-800 gap-5 ">
-        {listing?.bedrooms && <p className="flex items-center gap-1 ">
+        <ul className="flex flex-wrap mt-2 text-primary-800 gap-5 ">
+        {listing?.bedrooms && <li className="flex items-center gap-1 ">
          <FaBed className="text-xl"/> 
           {listing.bedrooms} <span>Beds</span>
-          </p>}
+          </li>}
 
-          {listing?.bathrooms && <p className="flex items-center gap-1 ">
+          {listing?.bathrooms && <li className="flex items-center gap-1 ">
          <FaBath className="text-xl"/> 
           {listing.bathrooms} <span>Baths</span>
-          </p>}
+          </li>}
 
-          {listing?.parking && <p className="flex items-center gap-1 "> 
+          {listing?.parking && <li className="flex items-center gap-1 "> 
           <FaParking className="text-xl"/>
           {listing.parking ? 'Parking' : ' No Parking'}
 
-            </p>}
+            </li>}
 
-           {listing?.furnished && <p className="flex items-center gap-1 "> 
+           {listing?.furnished && <li className="flex items-center gap-1 "> 
           <FaChair  className="text-xl"/>
           {listing.furnished ? 'Furnished' : ' Not Furnished'}
+          {/* listing?.furnished && : this method is called Optional Chaining */}
+          {/* listing.furnished && : this method is called Conditioanl Rendering  */}
+            </li>} 
+        </ul>
+        {currentUser && listing?.userRef && listing.userRef != currentUser._id && !contact &&(<button 
+        onClick={()=> setContact(true)}
+        className=" mt-5 max-w-3xl uppercase p-3 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">Contact Landlord</button>
 
-            </p>} 
-        </div>
+        )}
+        {contact && <Contact listing ={listing}/>}
       </div>
     </main>
   );
