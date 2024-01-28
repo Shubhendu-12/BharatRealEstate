@@ -13,6 +13,6 @@ router.post('/update/:id',verifyToken,updateListing);
 
 router.get('/get/:id',getListing);
 
-router.get('/get',getAllListings);
+router.get('/getAllListing',getAllListings);
 
 export default router;

@@ -57,6 +57,7 @@ const Listing = () => {
  
   return (
     <main className="bg-slate-200 ">
+      {/* Loading skeleton */}
       {loading && (
 <div role="status" className=" mt-2 mx-2 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center">
     <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
@@ -74,10 +75,7 @@ const Listing = () => {
     </div>
     <span className="sr-only">Loading...</span>
 </div>
-
-
-        
-      )}
+  )}
       {error && (
         <p className="text-center text-2xl my-6 ">Something went wrong !</p>
       )}
