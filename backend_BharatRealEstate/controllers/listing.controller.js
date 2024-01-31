@@ -71,7 +71,8 @@ export const getListing = async(req,res,next) =>{
 export const getAllListings = async(req,res,next)=>{
   
   try {
-    const limit = parseInt(req.query.limit) || 9;
+    const limit = parseInt(req.query.limit) || 8;
+    // To set the limit of how many items to show per page max item at once is 8.
     const startIndex = parseInt(req.query.startIndex) || 0;
 
     let offer = req.query.offer;

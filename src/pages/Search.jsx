@@ -61,7 +61,7 @@ const Search = () => {
 
         const data = await res.json();
 
-        if (data.length > 8) {
+        if (data.length > 7) {
           setShowMore(true);
         } else {
           setShowMore(false);

@@ -34,7 +34,7 @@ const Listing = () => {
           }
         );
         const data = await res.json();
-        console.log(data.imageUrls);
+        // console.log(data.imageUrls);
         if (data.success === false) {
           console.log(data.message);
           setError(true);
@@ -43,7 +43,7 @@ const Listing = () => {
         }
 
         setListing(data);
-        console.log(data);
+        // console.log(data);
         setLoading(false);
         setError(false);
       } catch (error) {

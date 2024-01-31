@@ -12,6 +12,7 @@ import UpdateListing from './pages/UpdateListing'
 import Listing from './pages/Listing'
 import Search from './pages/Search'
 import Contact from './pages/Contact'
+import Footer from './components/Footer'
 
 const App = () => {
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/update-listing/:listingId' element={<UpdateListing/>}/>
         </Route>
       </Routes>
+      <Footer/>
      </Router>
   )
 }
