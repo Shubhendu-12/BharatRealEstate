@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link,NavLink,useNavigate } from 'react-router-dom'
 import { useState,useEffect } from 'react'
+import b_r_estate_logo from '../assets/b_r_estate_logo.png'
 
 
 // const style1= {backgroundColor:"red"}
@@ -39,10 +40,21 @@ const Navbar = () => {
 
 <nav className="bg-slate-200 border-gray-200 dark:bg-gray-900">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-  <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
-      <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-  </a>
+  <NavLink
+           
+           to={'/'}
+             className="flex items-center mb-4 sm:mb-0 space-x-1 rtl:space-x-reverse bg-slate-200"
+           >
+             <img
+               src={b_r_estate_logo}
+               className="h-16 w-32 "
+               alt="B R Estate"
+             />
+             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-slate-700">
+               Bharat Real Estate
+             </span>
+           </NavLink>
+
   <div className="flex md:order-2">
   <Link to='/profile'>
             {currentUser ? (

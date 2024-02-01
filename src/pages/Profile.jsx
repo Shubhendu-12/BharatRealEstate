@@ -60,7 +60,7 @@ const Profile = () => {
       setFormData({...formData,
         [e.target.id]: e.target.value});
     }
-    console.log(formData);
+    // console.log(formData);
   // Update User API ROUTE
     const handleSubmit =async (e) =>{
         e.preventDefault();
@@ -76,8 +76,8 @@ const Profile = () => {
           });
           
           const data = await res.json();
-          console.log(currentUser._id);
-          console.log(data);
+          // console.log(currentUser._id);
+          // console.log(data);
 
           if (data.success === false) {
             dispatch(updateUserFailure(data.message));
@@ -103,7 +103,7 @@ const Profile = () => {
         });
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         if (data.success === false) {
           deleteUserFailure(data.message);
           return;

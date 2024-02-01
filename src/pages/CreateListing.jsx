@@ -34,7 +34,7 @@ const CreateListing = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(formData);
+  // console.log(formData);
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
@@ -188,7 +188,7 @@ const CreateListing = () => {
     }),
   });
   const data =await res.json();
-  console.log(data)
+  // console.log(data)
   setLoading(false);
   if (data.success === false) {
     setError(data.message);

@@ -35,7 +35,7 @@ const UpdateListing = () => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(formData);
+  // console.log(formData);
 
 //   Fetch the listing from database/backend by useEffect hook
 
@@ -210,7 +210,7 @@ const UpdateListing = () => {
     }),
   });
   const data =await res.json();
-  console.log(data)
+  // console.log(data)
   setLoading(false);
   if (data.success === false) {
     setError(data.message);

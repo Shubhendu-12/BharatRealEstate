@@ -53,7 +53,7 @@ const Listing = () => {
     };
     fetchListing();
   }, [params.listingId]);
-  console.log(loading);
+  // console.log(loading);
  
  
   return (
@@ -113,9 +113,9 @@ const Listing = () => {
       )}
       <div className=" my-8 flex flex-col mx-auto max-w-4xl max-sm:mx-2  max-md:mx10 max-lg:mx-20 justify-center ">
         {listing?.name && <p className=" text-2xl font-semibold my-2">
-         {listing.name} - ${' '}
+         {listing.name} - ₹{' '}
           
-          {listing.offer ? listing.discountedPrice.toLocaleString('en-US') : listing.regularPrice.toLocaleString('en-US')}
+          {listing.offer ? listing.discountedPrice.toLocaleString('en-IN') : listing.regularPrice.toLocaleString('en-IN')}
           {listing.type === 'rent' && '/month'}
         </p>}
         {listing?.address && <p className="mt-2 flex items-center gap-2 text-slate-800 text-sm">

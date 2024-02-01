@@ -18,7 +18,7 @@ const Contact = ({ listing }) => {
         );
         const data = await res.json();
         setLandlord(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.log(error);
       }

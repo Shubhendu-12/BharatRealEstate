@@ -15,7 +15,7 @@ const Signup = () => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(formData);
+  // console.log(formData);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -36,7 +36,7 @@ const Signup = () => {
 
       // console.log("User creation sucessfull");
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.success === false) {
         setLoading(false);
