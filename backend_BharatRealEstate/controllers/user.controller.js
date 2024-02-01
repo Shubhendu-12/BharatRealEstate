@@ -4,11 +4,11 @@ import { errorHandler } from "../utils/error.js";
 import bcryptjs from 'bcryptjs'
 
 // Test ROUTE
-export const test = (req,res)=>{
-    res.json({
-        message:"Hello there!",
-    });
-};
+// export const test = (req,res)=>{
+//     res.json({
+//         message:"Hello there!",
+//     });
+// };
 
 // Upadte User ROUTE
 export const updateUser = async (req,res,next)=>{
@@ -56,6 +56,7 @@ export const deleteUser = async (req,res,next) =>{
 
 }
 
+// Get Verified User Listing
 export const getUserListings = async(req,res,next) =>{
      if (req.user.id === req.params.id) {
         try {
@@ -70,7 +71,8 @@ export const getUserListings = async(req,res,next) =>{
      }
 };
 
-export const getUser = async(req,res,next)=>{
+//  Get User Info (Admin of that listing ) without verifying the user.
+export const getUserInfo = async(req,res,next)=>{
    try {
     const user = await User.findById(req.params.id);
    console.log(user)

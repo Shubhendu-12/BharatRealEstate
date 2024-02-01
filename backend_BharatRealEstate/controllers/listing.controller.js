@@ -1,8 +1,9 @@
 
-import React from 'react'
+
 import Listing from '../models/listing.model.js'
 import { errorHandler } from '../utils/error.js';
 
+// User can create his own listings
 export const createListing = async(req,res,next) => {
   try {
     const listing = await Listing.create(req.body);
@@ -13,6 +14,7 @@ export const createListing = async(req,res,next) => {
   }
 };
 
+// User can Delete his own listings
 export const deleteListing = async (req,res,next)=>{
   const listing = await Listing.findById(req.params.id);
 
@@ -31,6 +33,7 @@ export const deleteListing = async (req,res,next)=>{
   }
 };
 
+// User can Update his own listings
 export const updateListing = async(req,res,next)=>{
   const listing = await Listing.findById(req.params.id);
 
@@ -53,6 +56,7 @@ export const updateListing = async(req,res,next)=>{
   }
 };
 
+// Show User his own listings inside Profile Page 
 export const getListing = async(req,res,next) =>{
   
   try {
@@ -68,6 +72,7 @@ export const getListing = async(req,res,next) =>{
   }
 }
 
+// Get ALL Listings of every User at (one place like Search page and Home Page).
 export const getAllListings = async(req,res,next)=>{
   
   try {
@@ -116,5 +121,23 @@ export const getAllListings = async(req,res,next)=>{
 
   } catch (error) {
    next(error);    
+  }
+};
+
+// Admin Listing Deletion without User Verification
+
+export const deletelistingAdmin = async (req,res,next)=>{
+  const listing = await Listing.findById(req.params.id);
+
+  if(!listing){
+    return next(errorHandler(404,'Lisitng not found'));
+  }
+  
+
+  try {
+    await Listing.findByIdAndDelete(req.params.id);
+    res.status(200).json('Listing has been deleted !');
+  } catch (error) {
+    next(error);
   }
 };
