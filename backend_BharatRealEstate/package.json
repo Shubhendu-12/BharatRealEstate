@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && cd ../BharatRealEstate npm install  && cd ../BharatRealEstate npm run build ",
+    "build": "npm install && npm install --prefix=../BharatRealEstate && npm run build --prefix=../BharatRealEstate",
     "start": "node ./index.js"
   },
   "author": "shubh",
