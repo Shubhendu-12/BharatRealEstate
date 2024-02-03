@@ -66,7 +66,7 @@ const Profile = () => {
         e.preventDefault();
         try {
          dispatch(updateUserStart());
-         const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`,{
+         const res = await fetch(`https://bharatrealestate.onrender.com/api/user/update/${currentUser._id}`,{
             method:'POST',
             headers:{
               'Content-Type':'application/json',
@@ -97,7 +97,7 @@ const Profile = () => {
        
       try {
         dispatch(deleteUserStart());
-        const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
+        const res = await fetch(`https://bharatrealestate.onrender.com/api/user/delete/${currentUser._id}`,{
           method : 'DELETE',
           credentials: "include",
         });
@@ -121,7 +121,7 @@ const Profile = () => {
 
       try {
         dispatch(signOutUserStart())
-        const res = await fetch('http://localhost:3000/api/auth/signout');
+        const res = await fetch('https://bharatrealestate.onrender.com/api/auth/signout');
         const data = await res.json();
         if (data.success === false) {
           dispatch(signOutUserFailure(data.message));
@@ -137,7 +137,7 @@ const Profile = () => {
     const handleShowUserListings = async()=>{
      try {
       setShowListingError(false);
-      const res = await fetch(`http://localhost:3000/api/user/listings/${currentUser._id}`,{
+      const res = await fetch(`https://bharatrealestate.onrender.com/api/user/listings/${currentUser._id}`,{
       credentials: "include"});
      
       
@@ -158,7 +158,7 @@ const Profile = () => {
     const handleListingDelete = async (listingId)=>{
       try {
         
-        const res = await fetch(`http://localhost:3000/api/listing/delete/${listingId}`,{
+        const res = await fetch(`https://bharatrealestate.onrender.com/api/listing/delete/${listingId}`,{
           method : 'DELETE',
           credentials: "include",
         });
@@ -180,10 +180,10 @@ const Profile = () => {
   return (
     <>
     <div className='py-20  bg-gray-50'>
-      <div className='font-semibold text-3xl bg-gray-50 text-center  py-10'>Profile
+      <div className='font-semibold text-3xl bg-gray-50 text-center mb-4 py-10'>Profile
       
       </div>
-      <section className="bg-gray-50 dark:bg-gray-900">
+      <section className="bg-gray-50 dark:bg-gray-900 mt-4">
         <div className="flex flex-col items-center justify-center px-6 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
          

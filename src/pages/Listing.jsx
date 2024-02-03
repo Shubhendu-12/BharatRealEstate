@@ -27,7 +27,7 @@ const Listing = () => {
         setLoading(true);
         const listingId = params.listingId;
         const res = await fetch(
-          `http://localhost:3000/api/listing/get/${listingId}`,
+          `https://bharatrealestate.onrender.com/api/listing/get/${listingId}`,
           
           {
             credentials: "include",

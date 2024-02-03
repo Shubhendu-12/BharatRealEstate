@@ -176,7 +176,7 @@ const CreateListing = () => {
   setError(false);
   // API call starts from here 
 
-  const res = await fetch('http://localhost:3000/api/listing/create',{
+  const res = await fetch('https://bharatrealestate.onrender.com/api/listing/create',{
     method: 'POST',
     credentials: "include",
     headers: {

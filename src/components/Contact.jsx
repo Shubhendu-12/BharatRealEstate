@@ -13,7 +13,7 @@ const Contact = ({ listing }) => {
     const fetchLandlord = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/user/getUserInfo/${listing.userRef}`
+          `https://bharatrealestate.onrender.com/api/user/getUserInfo/${listing.userRef}`
           // Get User Info without verifying the user to show this listing to other users
         );
         const data = await res.json();

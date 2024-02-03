@@ -16,7 +16,7 @@ const Home = () => {
     
     const fetchOfferListings = async () =>{
       try {
-        const res = await fetch (`http://localhost:3000/api/listing/getAllListing?offer=true&limit=4`);
+        const res = await fetch (`https://bharatrealestate.onrender.com/api/listing/getAllListing?offer=true&limit=4`);
 
         const data = await res.json();
         setOfferListings(data);
@@ -28,7 +28,7 @@ const Home = () => {
 
     const fetchRentListings = async ()=>{
       try {
-        const res = await fetch (`http://localhost:3000/api/listing/getAllListing?type=rent&limit=4`);
+        const res = await fetch (`https://bharatrealestate.onrender.com/api/listing/getAllListing?type=rent&limit=4`);
 
         const data = await res.json();
         setRentListings(data);
@@ -40,7 +40,7 @@ const Home = () => {
 
     const fetchSaleListings = async ()=>{
       try {
-        const res = await fetch (`http://localhost:3000/api/listing/getAllListing?type=sale&limit=4`);
+        const res = await fetch (`https://bharatrealestate.onrender.com/api/listing/getAllListing?type=sale&limit=4`);
 
         const data = await res.json();
         setSaleListings(data);

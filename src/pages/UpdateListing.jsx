@@ -42,7 +42,7 @@ const UpdateListing = () => {
     useEffect(() => {
         const fetchListing = async()=>{
         const listingId = params.listingId;
-        const res = await fetch (`http://localhost:3000/api/listing/get/${listingId}`,{
+        const res = await fetch (`https://bharatrealestate.onrender.com/api/listing/get/${listingId}`,{
             credentials: 'include',
         });
         const data = await res.json();
@@ -198,7 +198,7 @@ const UpdateListing = () => {
   setError(false);
   // API call starts from here 
 
-  const res = await fetch(`http://localhost:3000/api/listing/update/${params.listingId}`,{
+  const res = await fetch(`https://bharatrealestate.onrender.com/api/listing/update/${params.listingId}`,{
     method: 'POST',
     credentials: "include",
     headers: {

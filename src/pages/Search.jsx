@@ -56,7 +56,7 @@ const Search = () => {
         setShowMore(false);
         const searchQuery = urlParams.toString();
         const res = await fetch(
-          `http://localhost:3000/api/listing/getAllListing?${searchQuery}`
+          `https://bharatrealestate.onrender.com/api/listing/getAllListing?${searchQuery}`
         );
 
         const data = await res.json();
@@ -145,7 +145,7 @@ const Search = () => {
     const searchQuery = urlParams.toString();
     //  API Call
     const res = await fetch(
-      `http://localhost:3000/api/listing/getAllListing?${searchQuery}`
+      `https://bharatrealestate.onrender.com/api/listing/getAllListing?${searchQuery}`
     );
 
     const data = await res.json();
