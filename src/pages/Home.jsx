@@ -73,10 +73,11 @@ const Home = () => {
         {offerListings && offerListings.length > 0 && offerListings.map((listing) => (
               <SwiperSlide key={listing._id}>
                 <div
-                  className="h-[450px]"
+                  className="h-[600px]"
                   style={{
                     background: `url(${listing.imageUrls[0]}) center no-repeat`,
-                    backgroundSize: `cover`,
+                    backgroundSize: `100% 100%`,
+                     // This adjusts the height and width to 100% without cropping the image
                   }}
                 >
                   

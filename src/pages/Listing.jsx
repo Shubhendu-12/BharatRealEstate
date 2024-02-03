@@ -87,10 +87,11 @@ const Listing = () => {
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className="h-[450px]"
+                  className="h-[600px]"
                   style={{
                     background: `url(${url}) center no-repeat`,
-                    backgroundSize: `cover`,
+                    backgroundSize: `100% 100%`,
+                    // This adjusts the height and width to 100% without cropping the image
                   }}
                 >
                   
@@ -129,7 +130,7 @@ const Listing = () => {
         </p> }
         {listing?.offer && <p>
         {listing.offer === true && (
-          <button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">${+listing.regularPrice - +listing.discountedPrice}  discount</button>
+          <button type="button" className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">₹{+listing.regularPrice - +listing.discountedPrice}  discount</button>
         
         )} </p>}
         </div>

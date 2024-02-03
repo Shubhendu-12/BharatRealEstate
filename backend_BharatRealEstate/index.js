@@ -8,9 +8,11 @@ import listingRouter from './routes/listing.route.js'
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 dotenv.config();
+
 const app = express();
+
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: true,
   methods:"GET,POST,PUT,DELETE",
   credentials:true,
 }
@@ -34,6 +36,8 @@ mongoose
     console.log(err);
   });
 
+
+
 app.listen(port, () => {
   console.log(`App listening at port ${port}`);
 });
@@ -43,6 +47,8 @@ app.use('/api/user',userRouter)
 app.use('/api/auth',authRouter)
 
 app.use('/api/listing',listingRouter)
+
+
 
 app.use((err,req,res,next)=>{
   const statusCode = err.statusCode|| 500;
