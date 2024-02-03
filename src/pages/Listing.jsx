@@ -112,7 +112,7 @@ const Listing = () => {
           {copied && (<p className="fixed top-36 right-5 z-20">Link copied</p>)}
         </div>
       )}
-      <div className=" my-8 flex flex-col mx-auto max-w-4xl max-sm:mx-2  max-md:mx10 max-lg:mx-20 justify-center ">
+      <div className=" my-8 flex flex-col mx-auto max-w-4xl max-sm:mx-4  max-md:mx10 max-lg:mx-20 justify-center ">
         {listing?.name && <p className=" text-2xl font-semibold my-2">
          {listing.name} - ₹{' '}
           

@@ -349,7 +349,7 @@ const Search = () => {
         </div>
         <div>
           {/* 2 nd div to display results */}
-          <h1 className="text-3xl font-semibold mx-3 p-2 text-slate-700 ">
+          <h1 className="text-3xl font-semibold mx-3 p-2 text-slate-700 max-sm:mt-4 ">
             Listing results:
           </h1>
           <div className="flex flex-wrap gap-6 mt-4 max-w-4xl items-center mx-12 max-md:justify-center">

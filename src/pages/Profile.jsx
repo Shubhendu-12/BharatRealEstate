@@ -179,11 +179,11 @@ const Profile = () => {
 
   return (
     <>
-    <div className='py-20  bg-gray-50'>
-      <div className='font-semibold text-3xl bg-gray-50 text-center mb-4 py-10'>Profile
+    <div className='py-12  bg-gray-50 flex flex-col gap-6'>
+      <div className='font-semibold text-3xl bg-gray-50 text-center  py-10'>Profile
       
       </div>
-      <section className="bg-gray-50 dark:bg-gray-900 mt-4">
+      <section className="bg-gray-50 dark:bg-gray-900 ">
         <div className="flex flex-col items-center justify-center px-6 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
          
@@ -192,7 +192,7 @@ const Profile = () => {
                 Update your account
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              <div className='flex items-center justify-center flex-col pt-3'>
+              <div className='flex items-center justify-center flex-col pt-3 max-sm:mx-3'>
         <input  ref={fileRef} onChange={(e)=>setFile(e.target.files[0])} type='file'accept='image/*'  />
           <img className='rounded-full object-cover my-4  cursor-pointer h-20 w-20 bg-gray-50'
         
@@ -308,9 +308,11 @@ const Profile = () => {
                     />
                   
                   </Link>
+                  <div className='max-sm:w-24 px-1 max-md:28 max-lg:w-36 w-36'>
                   <Link to={`/listing/${listing._id}`}>
                     <p className='hover:underline text-gray-800 font-semibold truncate '>{listing.name}</p>
                   </Link>
+                  </div>
                   <div className=' flex flex-col'>
                    <Link to={`/update-listing/${listing._id}`}>
                   <button type='button'

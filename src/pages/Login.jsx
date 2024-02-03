@@ -39,7 +39,7 @@ const Login = () => {
         credentials: "include",
       });
       // const { username, email, password } = formData;
-      // const res = await axios.post("http://localhost:3000/api/auth/signup", {
+      // const res = await axios.post("https://bharatrealestate.onrender.com/api/auth/signup", {
       //   username,
       //   email,
       //   password,
