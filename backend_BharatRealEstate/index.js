@@ -8,6 +8,7 @@ import listingRouter from './routes/listing.route.js'
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 dotenv.config();
+import path from "path"
 
 const app = express();
 
@@ -36,7 +37,7 @@ mongoose
     console.log(err);
   });
 
-
+  const  __dirname = path.resolve();
 
 app.listen(port, () => {
   console.log(`App listening at port ${port}`);
@@ -48,7 +49,11 @@ app.use('/api/auth',authRouter)
 
 app.use('/api/listing',listingRouter)
 
+app.use(express.static(path.join(__dirname, '../dist')));
 
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,'../dist','index.html'));
+});
 
 app.use((err,req,res,next)=>{
   const statusCode = err.statusCode|| 500;
