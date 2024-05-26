@@ -54,7 +54,7 @@ const Listing = () => {
     fetchListing();
   }, [params.listingId]);
   // console.log(loading);
-  
+ 
  
   return (
     <main className="bg-slate-100 ">
@@ -80,7 +80,7 @@ const Listing = () => {
       {error && (
         <p className="text-center text-2xl my-6 ">Something went wrong !</p>
       )}
-  
+
       {listing && !loading && !error && (
         <div>
           <Swiper navigation>
