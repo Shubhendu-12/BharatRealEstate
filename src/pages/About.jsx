@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 const About = () => {
   return (
     <div className='max-w-7xl mx-auto flex flex-col gap-4 mt-10 max-sm:mx-4'> 
-    <h1 className='font-semibold text-4xl'>About Rentify
+    <h1 className='font-semibold text-4xl'>About BR Estate
       {/* <span className='text-slate-700'>Real Estate</span> */}
       </h1> 
    <div className='max-w-5xl flex flex-col gap-5'>
-    <p>At <span className='font-semibold'> BR Estate </span> , we understand that finding the perfect property is not just about location; it's about discovering a place that truly feels like home. With a commitment to excellence and a passion for helping you find your dream property, we take pride in being your trusted partner in the real estate journey.</p>
+    <p>At <span className='font-semibold'> Bharat Real Estate </span> , we understand that finding the perfect property is not just about location; it's about discovering a place that truly feels like home. With a commitment to excellence and a passion for helping you find your dream property, we take pride in being your trusted partner in the real estate journey.</p>
 
     <h2 className='text-3xl font-semibold'>
     Why Choose Us?
