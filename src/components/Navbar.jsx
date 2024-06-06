@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link,NavLink,useNavigate } from 'react-router-dom'
 import { useState,useEffect } from 'react'
-import Rentify from '../assets/Rentify.png'
+import BREstate from '../assets/b_r_estate_logo.png'
 
 
 
@@ -47,12 +47,12 @@ const Navbar = () => {
              className="flex items-center mb-4 sm:mb-0 space-x-1 rtl:space-x-reverse bg-slate-200"
            >
              <img
-               src={Rentify}
+               src={BREstate}
                className="h-16 w-32 "
                alt="B R Estate"
              />
              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-slate-700">
-               Rentify
+             BR Estate
              </span>
            </NavLink>
 

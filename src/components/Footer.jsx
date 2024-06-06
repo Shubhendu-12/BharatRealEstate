@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import Rentify from '../assets/Rentify.png'
+import BREstate from '../assets/b_r_estate_logo.png'
 
 const Footer = () => {
   return (
@@ -14,12 +14,12 @@ const Footer = () => {
               className="flex items-center mb-4 sm:mb-0 space-x-1 rtl:space-x-reverse"
             >
               <img
-                src={Rentify}
+                src={BREstate}
                 className="h-16 w-32"
                 alt="B R Estate"
               />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-slate-700">
-                Rentify
+              BR Estate
               </span>
             </NavLink>
             <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
@@ -46,7 +46,7 @@ const Footer = () => {
           <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2024{" "}
             <Link to={'/'} className="hover:underline">
-              Rentify™
+            BR Estate™
             </Link>
             . All Rights Reserved.
           </span>
